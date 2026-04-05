@@ -5,7 +5,7 @@ __pycache__/
 .env
 *.db
 *.sqlite3
-backend/uploads/
+backend/app/uploads/
 node_modules/
 dist/
 .DS_Store
