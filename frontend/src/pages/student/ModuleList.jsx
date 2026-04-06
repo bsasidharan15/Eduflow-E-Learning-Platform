@@ -43,9 +43,9 @@ export default function ModuleList() {
           ))}
         </div>
       ) : (
-        <div className="space-y-5">
+        <div className="flex flex-col gap-5">
           {modules.map((module, i) => (
-            <Link key={module.id} to={`/learn/${courseId}/${module.id}`}>
+            <Link key={module.id} to={`/learn/${courseId}/${module.id}`} className="block">
               <div className="glass-card glow-on-hover flex items-center gap-4 py-5 px-6 animate-slide-up hover:-translate-y-0.5 transition-all duration-200">
                 <div className="w-10 h-10 rounded-xl bg-accent/15 flex items-center justify-center shrink-0">
                   <Layers size={16} className="text-accent" />
