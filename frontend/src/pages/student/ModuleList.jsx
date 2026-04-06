@@ -43,7 +43,7 @@ export default function ModuleList() {
           ))}
         </div>
       ) : (
-        <div className="space-y-3">
+        <div className="space-y-5">
           {modules.map((module, i) => (
             <Link key={module.id} to={`/learn/${courseId}/${module.id}`}>
               <div className="glass-card glow-on-hover flex items-center gap-4 py-5 px-6 animate-slide-up hover:-translate-y-0.5 transition-all duration-200">
