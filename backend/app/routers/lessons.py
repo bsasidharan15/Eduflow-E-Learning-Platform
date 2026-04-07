@@ -9,6 +9,7 @@ from ..database import get_db
 from ..models import Lesson, LessonResource
 from ..auth import require_admin
 from ..schemas import LessonCreate, LessonUpdate, LessonOut, ReorderRequest, LessonResourceOut
+from .. import storage
 
 router = APIRouter()
 
@@ -118,11 +119,20 @@ def upload_resource(
     db: Annotated[Session, Depends(get_db)],
     _: Annotated[object, Depends(require_admin)],
 ):
-    upload_dir = _lesson_upload_dir(lesson_id)
-    safe_name = f"{uuid.uuid4().hex}_{file.filename}"
-    stored_path = os.path.join(upload_dir, safe_name)
-    with open(stored_path, "wb") as f:
-        shutil.copyfileobj(file.file, f)
+    if storage.is_configured():
+        # Production: upload to Supabase Storage
+        file_bytes = file.file.read()
+        stored_path = storage.upload_file(
+            file_bytes, lesson_id, file.filename,
+            file.content_type or "application/octet-stream"
+        )
+    else:
+        # Local development: save to filesystem
+        upload_dir = _lesson_upload_dir(lesson_id)
+        safe_name = f"{uuid.uuid4().hex}_{file.filename}"
+        stored_path = os.path.join(upload_dir, safe_name)
+        with open(stored_path, "wb") as f:
+            shutil.copyfileobj(file.file, f)
 
     resource = LessonResource(
         lesson_id=lesson_id,
