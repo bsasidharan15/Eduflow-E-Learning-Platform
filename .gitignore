@@ -1,5 +1,6 @@
 # Root .gitignore
 .claude/
+docs/
 __pycache__/
 *.pyc
 *.pyo
